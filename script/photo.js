@@ -1,8 +1,15 @@
 const path = require("path");
 const fs = require("fs");
-const fsAsync = require("fs").promises;
+const os = require("os");
+
 const folder = process.argv[2];
-console.log(folder, __dirname);
+const workingDir = path.join(os.homedir(), "Pictures", folder);
+
+//디렉토리가 있는지 검사함
+if (!folder || !fs.existsSync(workingDir)) {
+  console.log("please enter folder name in pictures");
+  return;
+}
 
 //디랙토리 생성 함수
 function createDirectory(dname) {
@@ -19,15 +26,15 @@ createDirectory("duplicated");
 
 function fileMove(dname, file) {
   fs.rename(
-    __dirname + path.sep + folder + path.sep + file,
-    __dirname + path.sep + dname + path.sep + file,
+    workingDir + path.sep + file,
+    workingDir + path.sep + dname + path.sep + file,
     (error) => {
       console.log(error);
     }
   );
 }
 
-fs.readdir(__dirname + path.sep + "test", (err, files) => {
+fs.readdir(workingDir, (err, files) => {
   if (err) {
     throw err;
   }
