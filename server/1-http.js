@@ -9,6 +9,7 @@ const server = http.createServer((req, res) => {
   console.log(req.method);
   console.log(req.url);
   const url = req.url;
+  res.setHeader("Content-Type", "text/html");
   if (url === "/") {
     fs.createReadStream("./html/index.html").pipe(res);
   } else if (url === "/course") {

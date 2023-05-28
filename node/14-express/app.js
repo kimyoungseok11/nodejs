@@ -1,4 +1,5 @@
 import express from "express";
+import helmet from "helmet";
 const app = express();
 
 // app.get("/sky/:id", (req, res, next) => {
@@ -13,6 +14,8 @@ const app = express();
 //   //   res.sendStatus(400);
 //   res.status(201).send("created");
 // });
+
+app.use(helmet());
 
 app.all("/api", (req, res, next) => {
   console.log("all");
