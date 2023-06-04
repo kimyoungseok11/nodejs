@@ -1,21 +1,19 @@
 import express from "express";
 import { db } from "./dbConnect/dbConn.js";
 import config from "../config.js";
+import userRouter from "./router/user.js";
+import cors from "cors";
 
 const app = express();
 
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
+
 app.use(express.json());
 
-app.get("/", (req, res, next) => {
-  db.getConnection().then((connection) => {
-    const result = connection.execute("select * from users");
-    result.then((result) => res.send(result[0][0]));
-  });
-});
-
-db.getConnection().then((connection) => {
-  const result = connection.execute("select * from users");
-  result.then((result) => console.log(result[0][0]));
-});
+app.use("/user", userRouter);
 
 app.listen(config.host.port);
