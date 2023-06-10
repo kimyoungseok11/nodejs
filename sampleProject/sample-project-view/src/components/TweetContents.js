@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import TweetItem from "./TweetItem";
 
 const TweetBox = styled.div`
   width: 100%;
@@ -39,16 +40,15 @@ const TweetContents = (props) => {
     return (
       <TweetBox>
         {data.map((elem) => (
-          <div key={elem.id}>{elem.id}</div>
+          <TweetItem key={elem.id} tweet={elem}></TweetItem>
         ))}
       </TweetBox>
     );
   } else if (menu === "My Tweet") {
-    console.log(data);
     return (
       <TweetBox>
         {data.map((elem) => (
-          <div key={elem.id}>{elem.id}</div>
+          <TweetItem key={elem.id} tweet={elem}></TweetItem>
         ))}
       </TweetBox>
     );

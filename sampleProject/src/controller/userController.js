@@ -20,6 +20,15 @@ export async function getUserById(req, res) {
   });
 }
 
+export async function deleteTweetByUserIdx(req, res) {
+  db.getConnection().then((connection) => {
+    const result = connection.execute("delete from users where idx = ?", [
+      req.params.idx,
+    ]);
+    result.then((result) => res.send(result[0][0]));
+  });
+}
+
 export async function createUser(req, res) {
   const { id, password } = req.body;
   const hashPass = hash(password);
