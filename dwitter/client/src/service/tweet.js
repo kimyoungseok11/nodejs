@@ -4,7 +4,7 @@ export default class TweetService {
   }
 
   async getTweets(username) {
-    const query = username ? `?username$=${username}` : "";
+    const query = username ? `?username=${username}` : "";
     return this.http.fetch(`/tweets${query}`, {
       method: "GET",
     });
@@ -15,8 +15,8 @@ export default class TweetService {
       method: "POST",
       body: JSON.stringify({
         text,
-        username: "kim",
-        name: "kim",
+        username: "ellie",
+        name: "ellie",
       }),
     });
   }
@@ -28,7 +28,7 @@ export default class TweetService {
   }
 
   async updateTweet(tweetId, text) {
-    return await fetch(`${this.baseURL}/tweets/${tweetId}`, {
+    return this.http.fetch(`/tweets/${tweetId}`, {
       method: "PUT",
       body: JSON.stringify({
         text,

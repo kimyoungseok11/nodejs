@@ -13,13 +13,15 @@ export default class HttpClient {
     });
     let data;
     try {
-      data = await response.json();
+      if (options.method !== "DELETE") {
+        data = await response.json();
+      }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
 
     if (response.status > 299 || response.status < 200) {
-      const message = data.message ? data.message : "wrong";
+      const message = data && data.message ? data.message : "wrong";
       throw new Error(message);
     }
 
