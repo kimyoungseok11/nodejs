@@ -4,6 +4,7 @@ import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
 import tweetsRoute from "./router/tweets.js";
+import userRoute from "./router/user.js";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(helmet());
 app.use(cors());
 
 app.use("/tweets", tweetsRoute);
+app.use("/user", userRoute);
 
 //찾을 수 없는 페이지
 app.use((req, res, next) => {
