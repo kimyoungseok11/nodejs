@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 const secret = "kjksjnfakjsfdjksf";
-let decodedObj;
+let decoded;
 
 export async function jwtToken(username) {
   const token = jwt.sign(
@@ -12,10 +12,9 @@ export async function jwtToken(username) {
   );
 
   jwt.verify(token, secret, (error, decoded) => {
-    console.log(error, decoded);
-    decodedObj = decoded;
+    decoded = decoded;
   });
-  return decodedObj;
+  return token;
 }
 
 // setTimeout(() => {

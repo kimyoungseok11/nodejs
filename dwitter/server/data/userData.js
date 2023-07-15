@@ -3,8 +3,8 @@ import * as jwt from "../middleware/jwt.js";
 
 let users = [
   {
-    username: "ee",
-    password: "dd",
+    username: "bobobo",
+    password: "abcd1234",
     name: "sd",
     email: "asdfn@naver.com",
     url: "wmftjq@naver.com",
@@ -21,15 +21,17 @@ export async function getUserById(username) {
 
 export async function insertUser(data) {
   const password = data.password;
-  const hashed = bcrpyt.hashSync(password, 10);
+  const hashed = await bcrpyt.hash(password, 10);
   data.password = hashed;
 
-  const existUser = users.filter((user) => user.username == data.username);
+  const existUser = users.filter((user) => user.username === data.username);
   if (existUser.length > 0) {
     return;
   }
+  const token = await jwt.jwtToken(data.username);
   users = [...users, data];
-  return users;
+
+  return { token: token, username: data.username };
 }
 
 export async function login(username) {
