@@ -3,28 +3,25 @@ import "express-async-errors";
 import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
-import tweetsRoute from "./router/tweets.js";
-import userRoute from "./router/user.js";
+import tweetsRouter from "./router/tweets.js";
+import authRouter from "./router/auth.js";
 
 const app = express();
 
 app.use(express.json());
-app.use(morgan("tiny"));
 app.use(helmet());
 app.use(cors());
+app.use(morgan("tiny"));
 
-app.use("/tweets", tweetsRoute);
-app.use("/user", userRoute);
+app.use("/tweets", tweetsRouter);
+app.use("/auth", authRouter);
 
-//찾을 수 없는 페이지
 app.use((req, res, next) => {
   res.sendStatus(404);
 });
 
-//에러 처리
-app.use((err, req, res, next) => {
-  console.error(err);
+app.use((error, req, res, next) => {
+  console.error(error);
   res.sendStatus(500);
 });
-
 app.listen(8080);
