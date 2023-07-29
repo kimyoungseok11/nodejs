@@ -3,6 +3,7 @@ import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
 import postRouter from "./router/post.js";
+import userRouter from "./router/auth.js";
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(cors());
 app.use(morgan("tiny"));
 
 app.use("/post", postRouter);
+app.use("/user", userRouter);
 
 app.use((req, res, next) => {
   res.sendStatus(404);
