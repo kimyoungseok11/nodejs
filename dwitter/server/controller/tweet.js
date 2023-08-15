@@ -28,10 +28,12 @@ export async function updateTweet(req, res, next) {
   const id = req.params.id;
   const text = req.body.text;
   const tweet = await tweetRepository.getById(id);
+  console.log(tweet);
+  console.log(tweet[0].userid, req.userId);
   if (!tweet) {
     return res.status(404).json({ message: `Tweet not found: ${id}` });
   }
-  if (tweet.userId !== req.userId) {
+  if (tweet[0].userid !== req.userId) {
     return res.sendStatus(403);
   }
   const updated = await tweetRepository.update(id, text);
@@ -44,7 +46,7 @@ export async function deleteTweet(req, res, next) {
   if (!tweet) {
     return res.status(404).json({ message: `Tweet not found: ${id}` });
   }
-  if (tweet.userId !== req.userId) {
+  if (tweet[0].userid !== req.userId) {
     return res.sendStatus(403);
   }
   await tweetRepository.remove(id);
