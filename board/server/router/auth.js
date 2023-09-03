@@ -1,11 +1,9 @@
 import express from "express";
-import "express-async-errors";
-import * as userController from "../controller/auth.js";
+import * as authController from "../controller/auth.js";
+import { validationResult } from "express-validator";
 
 const router = express.Router();
 
-router.post("/signin", userController.createUser);
-
-router.post("/login", userController.loginUser);
+router.post("/signup", authController.signup);
 
 export default router;

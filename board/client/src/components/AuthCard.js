@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { signUp } from "../util/api.js";
 
 const AuthWrap = styled.div`
   width: 100vw;
@@ -73,9 +74,10 @@ const AuthWrap = styled.div`
 
 const AuthCard = ({ page }) => {
   const isLogin = page === "login";
+  const navigate = useNavigate();
   const [userInput, setUserInput] = useState({
     id: "",
-    pass: "",
+    password: "",
     email: "",
   });
   const inputChange = (e) => {
@@ -85,8 +87,13 @@ const AuthCard = ({ page }) => {
     };
     setUserInput(newObj);
   };
-  const loginClick = () => {
-    console.log(userInput);
+  const buttonClick = async () => {
+    if (!isLogin) {
+      const response = await signUp(userInput);
+      console.log(response);
+      alert("회원가입 완료");
+      navigate("/login");
+    }
   };
   return (
     <div>
@@ -103,7 +110,7 @@ const AuthCard = ({ page }) => {
               onChange={inputChange}
             ></input>
             <input
-              name="pass"
+              name="password"
               type="password"
               placeholder="Password"
               onChange={inputChange}
@@ -118,14 +125,18 @@ const AuthCard = ({ page }) => {
             )}
           </div>
           <div className="button-wrap">
-            <button className="login-button" onClick={loginClick}>
+            <button className="login-button" onClick={buttonClick}>
               {isLogin ? <label>로그인</label> : <label>회원가입</label>}
             </button>
           </div>
-          {isLogin && (
+          {isLogin ? (
             <div className="sub-button-wrap">
               <Link to="/findpass">비밀번호 찾기</Link>
               <Link to="/join">회원가입</Link>
+            </div>
+          ) : (
+            <div className="sub-button-wrap">
+              <Link to="/login">로그인</Link>
             </div>
           )}
         </div>

@@ -1,14 +1,26 @@
-import * as userRepository from "../data/auth.js";
+import * as authRepository from "../data/auth.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
-export async function createUser(req, res) {
-  const user = await userRepository.insertUser(req.body);
-  return user
-    ? res.status(201).json(user)
-    : res.status(409).json({ message: "아이디가 존재함" });
+function createJwtToken(id) {
+  return jwt.sign({ id }, "sdklfaslkdfa", {
+    expiresIn: 20,
+  });
 }
 
-export async function loginUser(req, res) {
-  const body = req.body;
-  const loginResult = await userRepository.login(body);
-  return res.status(201).json(loginResult);
+export async function signup(req, res) {
+  console.log(req.body);
+  const { id, password, email } = req.body;
+  const passwordHash = await bcrypt.hash(password, 12);
+  const isExist = await authRepository.findById(id);
+  const token = createJwtToken(id);
+  if (isExist) {
+    return res.status(401).send("이미 존재하는 회원입니다");
+  }
+  const user = await authRepository.createUser(id, passwordHash, email);
+  console.log(user);
+
+  res.status(200).send({ id });
 }
+
+export async function login(req, res) {}
